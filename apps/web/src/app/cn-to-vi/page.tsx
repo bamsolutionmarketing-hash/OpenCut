@@ -213,7 +213,7 @@ export default function CnToViPage() {
 				<Button
 					size="lg"
 					disabled={
-						run.kind === "running" || !videoFile || !srtFile || !activeProfile
+						run.kind === "running" || !videoFile || !activeProfile
 					}
 					onClick={handleRun}
 				>
