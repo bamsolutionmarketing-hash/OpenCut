@@ -13,9 +13,22 @@ It can be removed at any time without breaking the web app.
 
 ## Prerequisites
 
-- Bun ≥ 1.2.18 (matches the repo `packageManager` pin)
-- Node 18+ (Electron tooling uses Node)
-- A working `@opencut/web` install (from the repo root: `bun install`)
+- **Bun ≥ 1.2.18** — this repo is locked to bun via the root `packageManager`
+  field. Do **not** use npm or pnpm; npm in particular hits an `ERESOLVE`
+  conflict between Next 16.1.3 and `@opennextjs/cloudflare`'s peer range.
+- Node 18+ (Electron tooling uses Node under the hood)
+
+Install bun:
+
+```bash
+# Linux / macOS / WSL
+curl -fsSL https://bun.sh/install | bash
+
+# Windows (PowerShell)
+powershell -c "irm bun.sh/install.ps1 | iex"
+```
+
+Restart your terminal so PATH picks up bun.
 
 ## Use it now (one command)
 

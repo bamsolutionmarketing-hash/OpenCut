@@ -8,6 +8,16 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
+if ! command -v bun >/dev/null 2>&1; then
+  echo "ERROR: bun is not installed or not on PATH." >&2
+  echo "" >&2
+  echo "This repo requires bun (it is the locked package manager)." >&2
+  echo "Install it with:" >&2
+  echo "    curl -fsSL https://bun.sh/install | bash" >&2
+  echo "Then restart your shell so PATH picks it up." >&2
+  exit 1
+fi
+
 if [ ! -d node_modules ]; then
   echo "→ installing apps/electron deps …"
   bun install

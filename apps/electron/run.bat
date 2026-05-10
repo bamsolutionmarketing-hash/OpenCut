@@ -4,6 +4,19 @@ REM Usage:  apps\electron\run.bat
 
 cd /d "%~dp0"
 
+where bun >nul 2>&1
+if errorlevel 1 (
+    echo.
+    echo ERROR: bun is not installed or not on PATH.
+    echo.
+    echo This repo requires bun (it is the locked package manager).
+    echo Install it in PowerShell with:
+    echo     powershell -c "irm bun.sh/install.ps1 ^| iex"
+    echo Then close and reopen your terminal so PATH picks it up.
+    echo.
+    exit /b 1
+)
+
 if not exist node_modules (
     echo --^> installing apps\electron deps ...
     call bun install || exit /b 1
