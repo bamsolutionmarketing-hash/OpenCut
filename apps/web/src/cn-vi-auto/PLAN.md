@@ -67,18 +67,18 @@ Goal: Tesseract.js worker that takes `ImageData` → returns OCR boxes for `chi_
 
 Goal: Map each SRT cue to its visual bbox using OCR results (or fallback).
 
-- [ ] S3.1 Create `cn-vi-auto/default-zone.ts` — `computeDefaultZone(canvas)`
-- [ ] S3.2 Create `cn-vi-auto/match.ts` skeleton
-- [ ] S3.3 Implement `framesInTimeRange(frames, startSec, endSec)`
-- [ ] S3.4 Implement `mergeBoxesPerFrame(frame)` — merge multi-line boxes vertically adjacent
-- [ ] S3.5 Implement `medianBBox(bboxes)` (independent median of x, y, w, h)
-- [ ] S3.6 Implement `padBBox(bbox, paddingRatio, canvas)` — clamp to canvas
-- [ ] S3.7 Implement `matchCueToBBox(cue, ocrFrames, canvas, options)` returns `MatchedCue`
-- [ ] S3.8 Add `bboxSource` tracking ("ocr" | "default-zone" | "nearest-neighbor")
-- [ ] S3.9 Implement nearest-neighbor fallback: when cue has 0 OCR hits, use bbox of nearest cue ±2s
-- [ ] S3.10 Implement `matchAllCues(cues, ocrFrames, canvas, options)`
-- [ ] S3.11 Add `__tests__/match.test.ts` with mock OCR data
-- [ ] S3.12 Commit Stage 3
+- [x] S3.1 Create `cn-vi-auto/default-zone.ts` — `computeDefaultZone(canvas)`
+- [x] S3.2 Create `cn-vi-auto/match.ts` skeleton
+- [x] S3.3 Implement `framesInTimeRange(frames, startSec, endSec)`
+- [x] S3.4 Implement `mergeBoxesPerFrame(frame)` — merge multi-line boxes vertically adjacent
+- [x] S3.5 Implement `medianBBox(bboxes)` (independent median of x, y, w, h)
+- [x] S3.6 Implement `padBBox(bbox, paddingRatio, canvas)` — clamp to canvas
+- [x] S3.7 Implement `matchCueToBBox(cue, ocrFrames, canvas, options)` returns `MatchedCue`
+- [x] S3.8 Add `bboxSource` tracking ("ocr" | "default-zone" | "nearest-neighbor")
+- [x] S3.9 Implement nearest-neighbor fallback: when cue has 0 OCR hits, use bbox of nearest cue ±2s
+- [x] S3.10 Implement `matchAllCues(cues, ocrFrames, canvas, options)`
+- [x] S3.11 Add `__tests__/match.test.ts` with mock OCR data
+- [x] S3.12 Commit Stage 3
 
 ---
 
