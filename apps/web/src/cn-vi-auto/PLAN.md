@@ -106,14 +106,14 @@ Goal: MMS-TTS Vietnamese model running in a WebWorker, returning PCM Float32.
 
 Goal: Force-fit each TTS PCM into its cue's slot duration via soundtouchjs.
 
-- [ ] S5.1 Create `cn-vi-auto/fit-audio.ts` skeleton
-- [ ] S5.2 Implement `padSilence(pcm, targetSamples)`
-- [ ] S5.3 Implement `applyTempo(pcm, sampleRate, ratio)` using soundtouchjs
-- [ ] S5.4 Implement `fitTtsToSlot(tts, slotDurationSec)` returning `FittedTts`
-- [ ] S5.5 Track `speedRatio` and emit `tts-fast` warning when > THRESHOLD
-- [ ] S5.6 Implement `fitAll(ttsResults, cues, threshold)` returning `(FittedTts, warnings)`
-- [ ] S5.7 Add `__tests__/fit-audio.test.ts` for pure ratio math
-- [ ] S5.8 Commit Stage 5
+- [x] S5.1 Create `cn-vi-auto/fit-audio.ts` skeleton
+- [x] S5.2 Implement `padSilence(pcm, targetSamples)` + `trimToLength`
+- [x] S5.3 Implement `applyTempo(pcm, sampleRate, ratio)` via PitchShifter + OfflineAudioContext
+- [x] S5.4 Implement `fitTtsToSlot(tts, slotDurationSec)` returning `FittedTts`
+- [x] S5.5 Track `speedRatio` and emit `tts-fast` warning when > THRESHOLD
+- [x] S5.6 Implement `fitAll(ttsResults, cues, threshold)` returning `(FittedTts, warnings)`
+- [x] S5.7 Add `__tests__/fit-audio.test.ts` for pure ratio math
+- [x] S5.8 Commit Stage 5
 
 ---
 
