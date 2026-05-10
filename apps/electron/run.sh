@@ -23,4 +23,12 @@ if [ ! -d "$SCRIPT_DIR/../web/node_modules" ]; then
   (cd "$SCRIPT_DIR/../.." && bun install)
 fi
 
+# Bootstrap .env.local from .env.example so Next env validation passes.
+WEB_ENV_LOCAL="$SCRIPT_DIR/../web/.env.local"
+WEB_ENV_EXAMPLE="$SCRIPT_DIR/../web/.env.example"
+if [ ! -f "$WEB_ENV_LOCAL" ] && [ -f "$WEB_ENV_EXAMPLE" ]; then
+  echo "→ creating apps/web/.env.local from .env.example (placeholder values)"
+  cp "$WEB_ENV_EXAMPLE" "$WEB_ENV_LOCAL"
+fi
+
 exec bun run dev

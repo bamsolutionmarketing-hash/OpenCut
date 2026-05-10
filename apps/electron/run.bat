@@ -21,4 +21,11 @@ if not exist "..\web\node_modules" (
     popd
 )
 
+if not exist "..\web\.env.local" (
+    if exist "..\web\.env.example" (
+        echo --^> creating apps\web\.env.local from .env.example
+        copy /Y "..\web\.env.example" "..\web\.env.local" >nul
+    )
+)
+
 call bun run dev
