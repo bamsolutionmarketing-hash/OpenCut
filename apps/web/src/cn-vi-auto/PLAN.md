@@ -199,24 +199,24 @@ Goal: Pre-bundle ~50 royalty-free sound effects with metadata.
 
 Goal: Auto-tag Vietnamese cues with emotions and pick SFX accordingly.
 
-- [ ] S10.1 Create `cn-vi-auto/sfx/keywords-vi.ts` — keyword → emotion map
-- [ ] S10.2 Implement `tokenizeVietnamese(text)` (lowercase + remove diacritics for matching)
-- [ ] S10.3 Implement `classifyCue(text)` returns `EmotionTag[]`
-- [ ] S10.4 Add punctuation rules (?, !, ...)
-- [ ] S10.5 Add negation handling (`không + happy → flip`)
-- [ ] S10.6 Add `__tests__/classifier.test.ts` with 20 sample cues
-- [ ] S10.7 Create `cn-vi-auto/sfx/picker.ts`
-- [ ] S10.8 Implement `pickEmotionSfx(tag, rng, recentlyUsed)` with anti-repeat
-- [ ] S10.9 Implement `pickTextSfx(level, rng)` — pop/whoosh per level
-- [ ] S10.10 Implement `pickTransitionSfx(rng)` for segment boundaries
-- [ ] S10.11 Implement `pickSfxForCue(classified, level, rng)` → `SfxPick[]`
-- [ ] S10.12 Implement `pickSfxForSegmentBoundaries(segments, rng)` → `SfxPick[]`
-- [ ] S10.13 Implement density limiter (max 2 SFX overlapping)
-- [ ] S10.14 Create `cn-vi-auto/sfx/build-sfx-element.ts`
-- [ ] S10.15 Implement `loadSfxAsBlob(asset)` (fetch from bundled path)
-- [ ] S10.16 Implement `registerSfxMediaAsset(blob, name)`
-- [ ] S10.17 Implement `buildSfxElements(picks, masterGain)` → audio elements
-- [ ] S10.18 Commit Stage 10
+- [x] S10.1 Create `cn-vi-auto/sfx/keywords-vi.ts` — keyword → emotion map
+- [x] S10.2 Implement `tokenizeVietnamese(text)` (NFD-strip diacritics, lowercase, đ→d)
+- [x] S10.3 Implement `classifyCue(text)` returns `EmotionTag[]`
+- [x] S10.4 Punctuation rules: `?` → question, `!` → exclaim, `...`/`…` → suspense
+- [x] S10.5 Negation handling: `khong/chang/chua + happy/laugh/romantic` → flip to sad
+- [x] S10.6 Add `__tests__/classifier.test.ts` (16 sample cases, neutral fallback, ellipsis)
+- [x] S10.7 Create `cn-vi-auto/sfx/picker.ts`
+- [x] S10.8 `pickEmotionSfx(emotion, rng, recent)` with anti-repeat (4-deep)
+- [x] S10.9 `pickTextSfx(rng, recent)` for text-appear category
+- [x] S10.10 `pickTransitionSfx(rng, recent)` for transitions
+- [x] S10.11 `pickSfxForCues(cues, options, rng)` — text + emotion picks per cue
+- [x] S10.12 `pickSfxForSegmentBoundaries(boundaries, options, rng)`
+- [x] S10.13 `limitSfxDensity(picks, maxConcurrent=2)` — drops overlap beyond cap
+- [x] S10.14 Create `cn-vi-auto/sfx/build-sfx-elements.ts`
+- [x] S10.15 `loadSfxBlob/loadSfxFile` — returns null on 404 (skip-and-warn)
+- [ ] S10.16 ~~`registerSfxMediaAsset`~~ → moved to Stage 12 orchestrator (uses public command API)
+- [x] S10.17 `buildSfxElement(mediaId, pick, audioBuffer?)` → CreateUploadAudioElement
+- [x] S10.18 Commit Stage 10
 
 ---
 
