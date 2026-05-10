@@ -7,6 +7,7 @@ import { parseSubtitleFile } from "@/subtitles/parse";
 import type { CreateTimelineElement } from "@/timeline";
 import { collectSampledFrames } from "./sample-frames";
 import { createOcrSession, recognizeFrames } from "./ocr";
+import { ocrFramesToCues } from "./ocr-to-cues";
 import { matchAllCues } from "./match";
 import { createTtsSession, synthesizeAll } from "./tts";
 import { fitAll } from "./fit-audio";
@@ -37,7 +38,7 @@ import type {
 
 export interface RunPipelineArgs {
 	videoFile: File;
-	subtitleFile: File;
+	subtitleFile?: File | null;
 	logoFile?: File | null;
 	options: PipelineOptions;
 	signal?: AbortSignal;
@@ -81,19 +82,7 @@ export async function runCnToViPipeline(
 	};
 	const totalDurationSec = videoProcessed.duration ?? 0;
 
-	// ── 2. parse SRT ───────────────────────────────────────────────────────
-	emitter.stage("parsing-srt");
-	const srtText = await subtitleFile.text();
-	const parsed = parseSubtitleFile({
-		fileName: subtitleFile.name,
-		input: srtText,
-	});
-	for (const w of parsed.warnings) {
-		warnings.push({ code: "ocr-missing-cue", message: w });
-	}
-	abortGuard();
-
-	// ── 3. sample frames + 4. OCR (sequential — Tesseract has its own worker) ──
+	// ── 2. sample frames + OCR ────────────────────────────────────────────
 	emitter.stage("sampling-frames");
 	const frames = await collectSampledFrames({
 		file: videoFile,
@@ -135,10 +124,35 @@ export async function runCnToViPipeline(
 	}
 	abortGuard();
 
-	// ── 5. match cues ──────────────────────────────────────────────────────
+	// ── 3. parse SRT or derive cues from OCR ──────────────────────────────
+	let sourceCues;
+	if (subtitleFile) {
+		emitter.stage("parsing-srt");
+		const srtText = await subtitleFile.text();
+		const parsed = parseSubtitleFile({
+			fileName: subtitleFile.name,
+			input: srtText,
+		});
+		for (const w of parsed.warnings) {
+			warnings.push({ code: "ocr-missing-cue", message: w });
+		}
+		sourceCues = parsed.captions;
+	} else {
+		emitter.stage("parsing-srt"); // reuse stage label
+		sourceCues = ocrFramesToCues({ frames: ocrFrames });
+		if (sourceCues.length === 0) {
+			warnings.push({
+				code: "ocr-missing-cue",
+				message: "OCR found no Chinese text in the video. Check that the video has visible hardcoded subtitles.",
+			});
+		}
+	}
+	abortGuard();
+
+	// ── 4. match cues ──────────────────────────────────────────────────────
 	emitter.stage("matching");
 	const matched: MatchedCue[] = matchAllCues({
-		cues: parsed.captions,
+		cues: sourceCues,
 		ocrFrames,
 		options: { canvas },
 	});

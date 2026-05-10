@@ -87,8 +87,8 @@ export default function CnToViPage() {
 	}
 
 	async function handleRun() {
-		if (!videoFile || !srtFile || !activeProfile) {
-			toast.error("Pick a Chinese video and a Vietnamese SRT first.");
+		if (!videoFile || !activeProfile) {
+			toast.error("Upload a Chinese video first.");
 			return;
 		}
 		const project = editor.project.getActive();
