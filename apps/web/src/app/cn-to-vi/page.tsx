@@ -204,7 +204,7 @@ export default function CnToViPage() {
 				/>
 			)}
 			{run.kind === "error" && (
-				<Card>
+				<Card className="border-0 shadow-none bg-transparent">
 					<CardContent className="p-4 text-destructive">{run.message}</CardContent>
 				</Card>
 			)}
@@ -240,7 +240,7 @@ function ProfileSwitcher({
 	onDelete: () => void;
 }) {
 	return (
-		<Card>
+		<Card className="border-0 shadow-none bg-transparent">
 			<CardContent className="p-4 flex items-center gap-3">
 				<Label className="shrink-0">Channel profile</Label>
 				<Select value={activeId ?? ""} onValueChange={onSelect}>
@@ -282,7 +282,7 @@ function UploadCard({
 	onLogo: (f: File | null) => void;
 }) {
 	return (
-		<Card>
+		<Card className="border-0 shadow-none bg-transparent">
 			<CardContent className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
 				<FileSlot
 					label="Chinese video (9:16)"
@@ -344,7 +344,7 @@ function SettingsPanel({
 }) {
 	const o = profile.options;
 	return (
-		<Card>
+		<Card className="border-0 shadow-none bg-transparent">
 			<CardContent className="p-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
 				<Section title="Cover">
 					<Row label="Color">
@@ -627,7 +627,7 @@ function RunningView({
 		? Math.round((progress.current / progress.total) * 100)
 		: 0;
 	return (
-		<Card>
+		<Card className="border-0 shadow-none bg-transparent">
 			<CardContent className="p-4 flex flex-col gap-2">
 				<div className="flex items-center justify-between">
 					<span className="text-sm font-medium">
@@ -660,7 +660,7 @@ function DoneView({
 	onOpen: () => void;
 }) {
 	return (
-		<Card>
+		<Card className="border-0 shadow-none bg-transparent">
 			<CardContent className="p-4 flex flex-col gap-3">
 				<div className="flex items-center justify-between">
 					<span className="text-sm font-medium text-green-600">
