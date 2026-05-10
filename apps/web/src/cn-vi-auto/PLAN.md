@@ -178,25 +178,17 @@ Goal: Split video into N-second segments, each with a random transform set.
 
 Goal: Pre-bundle ~50 royalty-free sound effects with metadata.
 
-- [ ] S9.1 Create `cn-vi-auto/sfx/library/` directory
-- [ ] S9.2 Source 5 happy SFX from CC0 sources
-- [ ] S9.3 Source 4 laugh SFX from CC0 sources
-- [ ] S9.4 Source 4 sad SFX from CC0 sources
-- [ ] S9.5 Source 4 surprise SFX from CC0 sources
-- [ ] S9.6 Source 3 suspense SFX
-- [ ] S9.7 Source 3 romantic SFX
-- [ ] S9.8 Source 5 pop / text-appear SFX
-- [ ] S9.9 Source 4 whoosh SFX
-- [ ] S9.10 Source 3 ding SFX
-- [ ] S9.11 Source 2 question SFX
-- [ ] S9.12 Source 3 exclaim SFX
-- [ ] S9.13 Source 4 swoosh transition SFX
-- [ ] S9.14 Source 3 impact transition SFX
-- [ ] S9.15 Source 2 glitch transition SFX
-- [ ] S9.16 Normalize all to -16 LUFS, mp3 96kbps mono
-- [ ] S9.17 Create `sfx/manifest.ts` with all entries (id, file, duration, gain, license, source)
-- [ ] S9.18 Add per-file LICENSE list in `sfx/library/LICENSES.md`
-- [ ] S9.19 Commit Stage 9
+- [x] S9.1 Create `cn-vi-auto/sfx/` namespace
+- [~] S9.2-S9.15 Manifest entries declared for all 49 categories (audio files NOT bundled — placeholder only)
+- [ ] S9.16 Normalize all to -16 LUFS, mp3 96kbps mono — manual step, deferred
+- [x] S9.17 Create `sfx/manifest.ts` with all entries (id, file, duration, gain, category, tags, source, license)
+- [x] S9.18 Add per-file LICENSE format in `sfx/LICENSES.md`
+- [x] S9.19 Commit Stage 9
+
+> **Note:** S9.2–S9.16 require manual asset sourcing (downloading/normalizing
+> CC0 audio). The manifest is fully typed and committed; orchestrator (S12)
+> will skip-and-warn for missing files so the pipeline runs end-to-end before
+> assets are populated.
 
 > Note: if sourcing SFX requires manual download, this stage may be split or
 > use a placeholder set. Document any placeholders explicitly.
