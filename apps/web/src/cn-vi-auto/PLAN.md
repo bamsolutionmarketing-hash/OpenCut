@@ -86,19 +86,19 @@ Goal: Map each SRT cue to its visual bbox using OCR results (or fallback).
 
 Goal: MMS-TTS Vietnamese model running in a WebWorker, returning PCM Float32.
 
-- [ ] S4.1 Create `cn-vi-auto/workers/tts-protocol.ts` (request/response types)
-- [ ] S4.2 Create `cn-vi-auto/workers/tts.worker.ts` skeleton
-- [ ] S4.3 Inside worker: dynamic import `@huggingface/transformers`
-- [ ] S4.4 Inside worker: load `pipeline("text-to-speech", "facebook/mms-tts-vie")`
-- [ ] S4.5 Inside worker: progress proxy (model download %)
-- [ ] S4.6 Inside worker: handle `synthesize` message, return `{ pcm, sampleRate }`
-- [ ] S4.7 Create `cn-vi-auto/tts.ts` main-thread wrapper
-- [ ] S4.8 Implement `createTtsSession()` with init/synthesize/dispose
-- [ ] S4.9 Implement IndexedDB cache by `hashString(text)` key
-- [ ] S4.10 Implement `synthesizeAll(cues, session, onProgress)` — sequential
-- [ ] S4.11 Manual test: 1 short Vietnamese string → non-empty Float32Array
-- [ ] S4.12 Add cache-hit path: skip synth if hash present
-- [ ] S4.13 Commit Stage 4
+- [x] S4.1 ~~Create `cn-vi-auto/workers/tts-protocol.ts`~~ → co-located in `tts.worker.ts` (matches OpenCut's transcription pattern)
+- [x] S4.2 Create `cn-vi-auto/workers/tts.worker.ts` skeleton
+- [x] S4.3 Inside worker: import `@huggingface/transformers`
+- [x] S4.4 Inside worker: load `pipeline("text-to-speech", "Xenova/mms-tts-vie")`
+- [x] S4.5 Inside worker: progress proxy (file-bytes aggregation, % overall)
+- [x] S4.6 Inside worker: handle `synthesize` message, transfer PCM buffer
+- [x] S4.7 Create `cn-vi-auto/tts.ts` main-thread wrapper
+- [x] S4.8 Implement `createTtsSession()` with init/synthesize/dispose + AbortSignal
+- [x] S4.9 Implement IndexedDB cache (`tts-cache.ts`) by `hashString(text)` key
+- [x] S4.10 Implement `synthesizeAll(cues, session, onProgress)` — sequential
+- [ ] S4.11 Manual test: 1 short Vietnamese string → non-empty Float32Array (deferred — needs browser)
+- [x] S4.12 Cache-hit path implemented in `synthesize()` (read before postMessage)
+- [x] S4.13 Commit Stage 4
 
 ---
 
