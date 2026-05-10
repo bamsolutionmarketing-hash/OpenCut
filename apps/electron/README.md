@@ -17,24 +17,46 @@ It can be removed at any time without breaking the web app.
 - Node 18+ (Electron tooling uses Node)
 - A working `@opencut/web` install (from the repo root: `bun install`)
 
-## Quick start (dev)
+## Use it now (one command)
 
-From this folder:
+From the repo root:
+
+```bash
+./apps/electron/run.sh
+```
+
+That script:
+
+1. Installs `apps/electron` deps if missing
+2. Downloads the Electron binary on first run
+3. Installs `apps/web` deps if missing
+4. Compiles the TS main / preload (`tsc -p tsconfig.json` → `dist/`)
+5. Starts `apps/web` in Next dev mode on port 3000
+6. Launches an Electron window pointing at `http://localhost:3000/cn-to-vi`
+
+Hot reload works for both Next.js and the renderer.
+
+### Add a desktop launcher (Linux GNOME/KDE/etc.)
+
+```bash
+./apps/electron/install-desktop-entry.sh
+```
+
+Then "OpenCut" shows up in your application menu and runs `run.sh` for you.
+
+### Windows
+
+```cmd
+apps\electron\run.bat
+```
+
+### Manual / step-by-step
 
 ```bash
 cd apps/electron
 bun install
 bun run dev
 ```
-
-`bun run dev` does three things:
-
-1. Compiles the TypeScript main / preload (`tsc -p tsconfig.json` → `dist/`)
-2. Starts `apps/web` in Next dev mode on port 3000
-3. Launches Electron pointing at `http://localhost:3000/cn-to-vi`
-
-Hot reload works for both Next.js and the renderer. To reload main-process
-changes, run `bun run dev` again.
 
 ### Custom port / landing route
 
