@@ -91,7 +91,7 @@ export default function CnToViPage() {
 			toast.error("Upload a Chinese video first.");
 			return;
 		}
-		const project = editor.project.getActive();
+		const project = editor.project.getActiveOrNull();
 		let projectId = project?.metadata.id ?? null;
 		if (!projectId) {
 			projectId = await editor.project.createNewProject({

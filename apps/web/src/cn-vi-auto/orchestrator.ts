@@ -51,8 +51,8 @@ export async function runCnToViPipeline(
 	const { videoFile, subtitleFile, logoFile, options, signal, onProgress } =
 		args;
 	const editor = EditorCore.getInstance();
-	const project = editor.project.getActive();
-	if (!project) throw new Error("No active project");
+	const project = editor.project.getActiveOrNull();
+	if (!project) throw new Error("No active project — please open or create a project first.");
 	const projectId = project.metadata.id;
 
 	const emitter = createPipelineEmitter();
