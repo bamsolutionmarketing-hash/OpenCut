@@ -152,7 +152,7 @@ export default function CnToViPage() {
 	}
 
 	return (
-		<main className="mx-auto max-w-4xl px-6 py-10 flex flex-col gap-8">
+		<main className="mx-auto max-w-4xl px-6 py-10 flex flex-col gap-8 [&_*]:!outline-none [&_*]:!ring-0 [&_*]:!ring-offset-0">
 			<header className="flex flex-col gap-2">
 				<h1 className="text-2xl font-bold">Chinese → Vietnamese auto-pipeline</h1>
 				<p className="text-muted-foreground text-sm">
