@@ -143,16 +143,16 @@ Goal: Pure functions that turn matched cues + options into OpenCut element specs
 
 Goal: Logo image placed across timeline, repositioned each N seconds, avoiding caption bbox.
 
-- [ ] S7.1 Create `cn-vi-auto/zones.ts` with 9-zone definition
-- [ ] S7.2 Implement `getZoneRect(zone, canvas, sizeRatio, padding)`
-- [ ] S7.3 Implement `zoneOverlapsCaption(zoneRect, captionBBoxes)`
-- [ ] S7.4 Create `cn-vi-auto/logo-placement.ts`
-- [ ] S7.5 Implement `computeLogoSlots(totalDuration, intervalSec)` (time windows)
-- [ ] S7.6 Implement `pickZoneForSlot(slot, captionBBoxes, rng, avoidCaption)`
-- [ ] S7.7 Add anti-repeat: don't pick same zone consecutively
-- [ ] S7.8 Implement `buildLogoElements(logoMediaId, slots, canvas, opts)` → image elements
-- [ ] S7.9 Add `__tests__/zones.test.ts` for overlap math
-- [ ] S7.10 Commit Stage 7
+- [x] S7.1 Create `cn-vi-auto/zones.ts` with 9-zone definition
+- [x] S7.2 Implement `getZoneRect(zone, canvas, sizeRatio, padding)`
+- [x] S7.3 Implement `zoneOverlapsCaption(zoneRect, captionBBoxes)` + `bboxesOverlap`
+- [x] S7.4 Create `cn-vi-auto/logo-placement.ts` (pure helpers, no `@/wasm`)
+- [x] S7.5 Implement `computeLogoSlotTimes(totalDuration, intervalSec)` + `computeLogoSlots`
+- [x] S7.6 Implement `pickZoneForSlot(slot, captionBBoxes, rng, avoidCaption)`
+- [x] S7.7 Anti-repeat: filter previous zone unless only one candidate left
+- [x] S7.8 Implement `buildLogoElements` in `build-logo-elements.ts` (separate to keep helpers test-pure)
+- [x] S7.9 Add `__tests__/zones.test.ts` (zone math + overlap + pickZone determinism)
+- [x] S7.10 Commit Stage 7
 
 ---
 
