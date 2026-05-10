@@ -121,21 +121,21 @@ Goal: Force-fit each TTS PCM into its cue's slot duration via soundtouchjs.
 
 Goal: Pure functions that turn matched cues + options into OpenCut element specs.
 
-- [ ] S6.1 Create `cn-vi-auto/units.ts` — px↔canvas-units helpers
-- [ ] S6.2 Implement `bboxToCanvasRect(bbox, canvas)` (centered coord system)
-- [ ] S6.3 Create `cn-vi-auto/build-cover-element.ts`
-- [ ] S6.4 Implement `buildCoverElement(matchedCue, opts, canvas)` → graphic/rect element
-- [ ] S6.5 Decide cover element type: `effect` background, `graphic` shape, or text-w/-bg
-- [ ] S6.6 Create `cn-vi-auto/build-caption-element.ts`
-- [ ] S6.7 Copy + adapt `buildSubtitleTextElement` to accept explicit `bbox` placement
-- [ ] S6.8 Add font-size auto-calc from bbox height
-- [ ] S6.9 Apply user font + stroke style
-- [ ] S6.10 Create `cn-vi-auto/build-audio-element.ts`
-- [ ] S6.11 Implement `pcmToWavBlob(pcm, sampleRate)`
-- [ ] S6.12 Implement `registerAudioMediaAsset(blob, name)` via OpenCut media public API
-- [ ] S6.13 Implement `buildAudioElement(mediaId, fittedTts, startSec)` → audio element
-- [ ] S6.14 Add `__tests__/units.test.ts` for coord conversion
-- [ ] S6.15 Commit Stage 6
+- [x] S6.1 Create `cn-vi-auto/units.ts` — px↔canvas-units helpers
+- [x] S6.2 Implement `bboxCenterToCanvasPosition(bbox, canvas)` + `bboxToGraphicScale`
+- [x] S6.3 Create `cn-vi-auto/build-cover-element.ts`
+- [x] S6.4 Implement `buildCoverElement` returning `CreateGraphicElement`
+- [x] S6.5 Cover type chosen: `graphic` rectangle (definitionId="rectangle") via OpenCut's `buildGraphicElement`
+- [x] S6.6 Create `cn-vi-auto/build-caption-element.ts`
+- [x] S6.7 Adapt subtitle builder to explicit `bbox` placement (center-coord transform)
+- [x] S6.8 Font size derived from bbox height in `units.fontSizeForBBoxHeight`
+- [x] S6.9 Apply user font/color from `CaptionStyleOptions`
+- [x] S6.10 Create `cn-vi-auto/build-audio-element.ts` + extract pure `wav.ts`
+- [x] S6.11 Implement `pcmToWavBlob(pcm, sampleRate)` (16-bit PCM, mono)
+- [ ] S6.12 ~~Implement `registerAudioMediaAsset` here~~ → moved to Stage 12 orchestrator (public API)
+- [x] S6.13 Implement `buildAudioElement(mediaId, fittedTts, startSec)` → CreateUploadAudioElement
+- [x] S6.14 Add `__tests__/units.test.ts` + `__tests__/wav.test.ts`
+- [x] S6.15 Commit Stage 6
 
 ---
 
