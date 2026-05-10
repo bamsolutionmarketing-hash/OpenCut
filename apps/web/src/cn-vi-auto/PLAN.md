@@ -24,16 +24,16 @@ Format: `S{stage}.{step}` — e.g. `S2.3` = Stage 2, step 3.
 
 Goal: Extract `ImageData` frames at 6 fps from a video, cropped to bottom 35% ROI.
 
-- [ ] S1.1 Create `cn-vi-auto/sample-frames.ts` skeleton with type signature
-- [ ] S1.2 Implement `openVideoInput(file)` — returns `mediabunny` `Input`
-- [ ] S1.3 Implement `getVideoMetadata(input)` — duration, width, height, fps
-- [ ] S1.4 Implement `computeSampleTimestamps(durationSec, fps)` — array of times
-- [ ] S1.5 Implement `cropImageDataToROI(imageData, topRatio, heightRatio)` (canvas-based)
-- [ ] S1.6 Implement `sampleFrame(sink, timeSec)` — returns `ImageData` | null
-- [ ] S1.7 Implement main `sampleFrames({ file, fps, roi, onProgress })` async generator
-- [ ] S1.8 Add unit-test file `__tests__/sample-frames.test.ts` (skip actual decode, test pure helpers)
-- [ ] S1.9 Manual smoke test: log frame count for a known clip
-- [ ] S1.10 Commit Stage 1
+- [x] S1.1 Create `cn-vi-auto/sample-frames.ts` skeleton with type signature
+- [x] S1.2 Implement `openVideoInput(file)` — returns `mediabunny` `Input`
+- [x] S1.3 Implement `getVideoMetadata(input)` — duration, width, height, fps
+- [x] S1.4 Implement `computeSampleTimestamps(durationSec, fps)` — array of times
+- [x] S1.5 Implement `cropImageDataToROI(imageData, topRatio, heightRatio)` (canvas-based)
+- [x] S1.6 Implement `sampleFrame(sink, timeSec)` — returns `ImageData` | null
+- [x] S1.7 Implement main `sampleFrames({ file, fps, roi, onProgress })` async generator
+- [x] S1.8 Add unit-test file `__tests__/sample-frames.test.ts` (skip actual decode, test pure helpers)
+- [ ] S1.9 Manual smoke test: log frame count for a known clip (deferred — needs browser)
+- [x] S1.10 Commit Stage 1
 
 ---
 
