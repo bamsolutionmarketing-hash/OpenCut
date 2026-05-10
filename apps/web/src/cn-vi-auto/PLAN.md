@@ -224,17 +224,17 @@ Goal: Auto-tag Vietnamese cues with emotions and pick SFX accordingly.
 
 Goal: Save/load multi-channel settings presets in localStorage.
 
-- [ ] S11.1 Create `cn-vi-auto/profile-store.ts`
-- [ ] S11.2 Define localStorage key `cn-vi-auto.profiles.v1`
-- [ ] S11.3 Implement `listProfiles()` returns `ChannelProfile[]`
-- [ ] S11.4 Implement `getActiveProfile()` returns `ChannelProfile | null`
-- [ ] S11.5 Implement `saveProfile(profile)` (insert/update)
-- [ ] S11.6 Implement `deleteProfile(id)`
-- [ ] S11.7 Implement `setActiveProfile(id)`
-- [ ] S11.8 Implement `createDefaultProfile(name)` factory
-- [ ] S11.9 Implement migration helper for schema changes
-- [ ] S11.10 Add `__tests__/profile-store.test.ts` with mocked localStorage
-- [ ] S11.11 Commit Stage 11
+- [x] S11.1 Create `cn-vi-auto/profile-store.ts` with injectable storage adapter
+- [x] S11.2 Keys: `cn-vi-auto.profiles.v1` + `cn-vi-auto.profiles.active.v1`
+- [x] S11.3 `listProfiles()` returns `ChannelProfile[]`
+- [x] S11.4 `getActiveProfile()` returns `ChannelProfile | null`
+- [x] S11.5 `saveProfile(profile)` upserts and stamps `updatedAt`
+- [x] S11.6 `deleteProfile(id)` clears active id when matching
+- [x] S11.7 `setActiveProfileId(id)` / `getActiveProfileId()`
+- [x] S11.8 `createDefaultProfile(name)` factory using DEFAULT_PIPELINE_OPTIONS
+- [x] S11.9 `migrate(state)` fills missing fields, deep-merges options
+- [x] S11.10 Add `__tests__/profile-store.test.ts` with in-memory ProfileStorage
+- [x] S11.11 Commit Stage 11
 
 ---
 
