@@ -160,17 +160,17 @@ Goal: Logo image placed across timeline, repositioned each N seconds, avoiding c
 
 Goal: Split video into N-second segments, each with a random transform set.
 
-- [ ] S8.1 Create `cn-vi-auto/segment-variation.ts` skeleton
-- [ ] S8.2 Implement `computeSegmentBoundaries(totalDuration, segmentDuration, cues)` with cue-gap snap
-- [ ] S8.3 Implement `pickTransformsForSegment(rng, opts, containsCue)` returns `SegmentInstance`
-- [ ] S8.4 Special-case flip: only when `!containsCue`
-- [ ] S8.5 Implement `paramsFromSegment(segment, canvas)` → element transform params
-- [ ] S8.6 Look up OpenCut transform param names (positionX/Y, scaleX/Y, rotation, flip)
-- [ ] S8.7 Implement `buildSegmentedVideoElements(mediaAsset, segments)` → video elements with `trimStart`/`trimEnd`
-- [ ] S8.8 Implement `applyZoomMode(segment, mode)` via keyframes (or static-only for v1)
-- [ ] S8.9 Decide: keyframe support v1 or skip zoom motion if too complex
-- [ ] S8.10 Add `__tests__/segment-variation.test.ts`
-- [ ] S8.11 Commit Stage 8
+- [x] S8.1 Create `cn-vi-auto/segment-variation.ts` skeleton (pure helpers)
+- [x] S8.2 `computeSegmentBoundaries` with cue-gap snap (snap forward to cue end if cut would split it)
+- [x] S8.3 `pickTransformsForSegment(rng, opts, containsCue)` → `SegmentInstance`
+- [x] S8.4 Flip suppressed when `containsCue` (text would mirror)
+- [x] S8.5 `paramsFromSegment(segment, canvas)` → ParamValues
+- [x] S8.6 Used `transform.positionX/Y/scaleX/Y/rotate`; flip = negative scaleX
+- [x] S8.7 `buildSegmentVideoElements` with `trimStart`/`trimEnd` + sequential `startTime`
+- [ ] S8.8 ~~Zoom-mode keyframes~~ → deferred to Stage 14 polish; v1 ships static-only
+- [x] S8.9 Decided: skip keyframes for v1 (zoomMode is recorded but only "static" is rendered)
+- [x] S8.10 Add `__tests__/segment-variation.test.ts` (boundaries, transforms, params, determinism)
+- [x] S8.11 Commit Stage 8
 
 ---
 
