@@ -1,0 +1,61 @@
+{
+  "name": "@opencut/electron",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Electron desktop shell for OpenCut (loads the @opencut/web Next.js app in a native window).",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "bun run build:tsc && node start-dev.mjs",
+    "dev:web-only": "next dev --cwd ../web --turbopack -p 3000",
+    "build:tsc": "tsc -p tsconfig.json",
+    "build:web": "cd ../web && bun run build",
+    "start:packaged": "electron .",
+    "package": "bun run build:tsc && electron-builder --dir",
+    "dist": "bun run build:tsc && electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.8.3",
+    "@types/node": "^24.2.1"
+  },
+  "build": {
+    "appId": "com.opencut.electron",
+    "productName": "OpenCut",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../web/.next/standalone",
+        "to": "web",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "../web/.next/static",
+        "to": "web/.next/static",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "../web/public",
+        "to": "web/public",
+        "filter": ["**/*"]
+      }
+    ],
+    "linux": {
+      "target": ["AppImage"],
+      "category": "AudioVideo"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "category": "public.app-category.video"
+    },
+    "win": {
+      "target": ["nsis"]
+    }
+  }
+}
