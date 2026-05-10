@@ -41,21 +41,25 @@ Goal: Extract `ImageData` frames at 6 fps from a video, cropped to bottom 35% RO
 
 Goal: Tesseract.js worker that takes `ImageData` → returns OCR boxes for `chi_sim+chi_tra`.
 
-- [ ] S2.1 Create `cn-vi-auto/workers/ocr.worker.ts` skeleton (postMessage protocol)
-- [ ] S2.2 Define worker request/response types in `workers/ocr-protocol.ts`
-- [ ] S2.3 Implement worker init message: `{ type: "init", langs }`
-- [ ] S2.4 Implement worker recognize message: `{ type: "recognize", imageData, frameTime }`
-- [ ] S2.5 Inside worker: load `createWorker` with `chi_sim+chi_tra`
-- [ ] S2.6 Inside worker: handle `recognize` → call `worker.recognize(imageData)` → map to OcrBox[]
-- [ ] S2.7 Inside worker: progress event proxying (loading model %)
-- [ ] S2.8 Create `cn-vi-auto/ocr.ts` — main thread wrapper
-- [ ] S2.9 Implement `createOcrSession()` returns `{ recognize, dispose, onProgress }`
-- [ ] S2.10 Implement frame-by-frame `recognizeFrames(frames, session, onProgress)`
-- [ ] S2.11 Convert tesseract bbox to local `BBox` type (offset Y by ROI top)
-- [ ] S2.12 Filter boxes below `OCR_MIN_CONFIDENCE`
-- [ ] S2.13 Add `__tests__/ocr-coords.test.ts` for coord conversion (pure function)
-- [ ] S2.14 Manual test: 1 frame with Chinese hard-sub → returns sane bbox
-- [ ] S2.15 Commit Stage 2
+> Note: Tesseract.js v7's `createWorker` already runs OCR off the main thread
+> in its own internal Web Worker. The custom worker-protocol layer (S2.1-S2.7)
+> was therefore skipped — `ocr.ts` calls Tesseract directly.
+
+- [x] S2.1 ~~Create `cn-vi-auto/workers/ocr.worker.ts` skeleton~~ (skipped — Tesseract has its own)
+- [x] S2.2 ~~Define worker request/response types~~ (skipped)
+- [x] S2.3 ~~Implement worker init message~~ (skipped)
+- [x] S2.4 ~~Implement worker recognize message~~ (skipped)
+- [x] S2.5 ~~Inside worker: load createWorker with chi_sim+chi_tra~~ → done in `ocr.ts`
+- [x] S2.6 ~~Inside worker: handle recognize~~ → done in `ocr.ts`
+- [x] S2.7 ~~Inside worker: progress event proxying~~ → done via `onLoad` callback
+- [x] S2.8 Create `cn-vi-auto/ocr.ts` — main thread wrapper
+- [x] S2.9 Implement `createOcrSession()` returns `{ recognize, dispose }`
+- [x] S2.10 Implement frame-by-frame `recognizeFrames(frames, session, onProgress)`
+- [x] S2.11 Convert tesseract bbox to local `BBox` type (offset Y by ROI top, scale by downscale ratio)
+- [x] S2.12 Filter boxes below `OCR_MIN_CONFIDENCE`
+- [x] S2.13 Add `__tests__/ocr-coords.test.ts` for coord conversion (pure function)
+- [ ] S2.14 Manual test: 1 frame with Chinese hard-sub → returns sane bbox (deferred — needs browser)
+- [x] S2.15 Commit Stage 2
 
 ---
 
