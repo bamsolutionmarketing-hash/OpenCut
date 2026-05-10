@@ -242,30 +242,30 @@ Goal: Save/load multi-channel settings presets in localStorage.
 
 Goal: Wire all stages into one `runCnToViPipeline` function.
 
-- [ ] S12.1 Create `cn-vi-auto/progress.ts` (typed event emitter)
-- [ ] S12.2 Implement `PipelineEmitter` with `on`, `emit`, `off`
-- [ ] S12.3 Create `cn-vi-auto/orchestrator.ts` skeleton
-- [ ] S12.4 Implement `importVideoAsMediaAsset(file)` via OpenCut public API
-- [ ] S12.5 Implement `importLogoAsMediaAsset(dataUrl)` via OpenCut public API
-- [ ] S12.6 Implement step 1: import video + logo
-- [ ] S12.7 Implement step 2: parse SRT (use existing `parseSubtitleFile`)
-- [ ] S12.8 Implement step 3: sample frames (use Stage 1 module)
-- [ ] S12.9 Implement step 4: OCR (use Stage 2 module, parallelize with TTS load)
-- [ ] S12.10 Implement step 5: match cues (Stage 3)
-- [ ] S12.11 Implement step 6: TTS generation (Stage 4)
-- [ ] S12.12 Implement step 7: fit audio (Stage 5)
-- [ ] S12.13 Implement step 8: classify emotions (Stage 10)
-- [ ] S12.14 Implement step 9: pick SFX (Stage 10)
-- [ ] S12.15 Implement step 10: compute segments (Stage 8)
-- [ ] S12.16 Implement step 11: compute logo slots (Stage 7)
-- [ ] S12.17 Implement step 12: build all elements
-- [ ] S12.18 Implement step 13: assemble `BatchCommand`
-- [ ] S12.19 Implement step 14: execute via editor command bus
-- [ ] S12.20 Implement step 15: mute original audio if option set
-- [ ] S12.21 Aggregate warnings + return `PipelineResult`
-- [ ] S12.22 Add cancel/abort signal support
-- [ ] S12.23 Add `__tests__/orchestrator-flow.test.ts` (mock all sub-modules)
-- [ ] S12.24 Commit Stage 12
+- [x] S12.1 Create `cn-vi-auto/progress.ts` (typed event emitter)
+- [x] S12.2 `createPipelineEmitter` returns `{ on, emit, stage, progress }`
+- [x] S12.3 Create `cn-vi-auto/orchestrator.ts` (`runCnToViPipeline`)
+- [x] S12.4 Import video via `processMediaAssets` + `AddMediaAssetCommand`
+- [x] S12.5 Import logo via same pipeline
+- [x] S12.6 Step 1 — import video
+- [x] S12.7 Step 2 — `parseSubtitleFile` (handles SRT + ASS)
+- [x] S12.8 Step 3 — sample frames
+- [ ] S12.9 ~~Parallelize OCR + TTS load~~ → deferred; sequential keeps mental model simple, latency dominated by OCR anyway
+- [x] S12.10 Step 5 — match cues
+- [x] S12.11 Step 6 — TTS generation
+- [x] S12.12 Step 7 — fit audio
+- [x] S12.13 Step 8 — classify emotions
+- [x] S12.14 Step 9 — pick SFX (cue + transition + density limit)
+- [x] S12.15 Step 10 — compute segments
+- [x] S12.16 Step 11 — compute logo slots
+- [x] S12.17 Step 12 — build all element specs (video / cover / caption / audio / logo / SFX)
+- [x] S12.18 Step 13 — assemble single `BatchCommand` with media + insert commands
+- [x] S12.19 Step 14 — execute via `editor.command.execute({ command })`
+- [ ] S12.20 ~~Mute original audio~~ → already handled by `isSourceAudioEnabled: false` on segment video elements
+- [x] S12.21 Aggregate warnings (TTS-fast + missing SFX assets) + return `PipelineResult`
+- [x] S12.22 AbortSignal threaded through every stage (`abortGuard()` + per-module `signal` param)
+- [ ] S12.23 ~~Mock-everything orchestrator-flow test~~ → deferred to Stage 14 manual browser test (the orchestrator is integration glue; submodules already test-covered)
+- [x] S12.24 Commit Stage 12
 
 ---
 
