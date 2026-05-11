@@ -7,7 +7,6 @@ import { parseSubtitleFile } from "@/subtitles/parse";
 import type { CreateTimelineElement } from "@/timeline";
 import { collectSampledFrames } from "./sample-frames";
 import { createOcrSession, recognizeFrames } from "./ocr";
-import { ocrFramesToCues } from "./ocr-to-cues";
 import { matchAllCues } from "./match";
 import { createTtsSession, synthesizeAll } from "./tts";
 import { fitAll } from "./fit-audio";
@@ -38,7 +37,7 @@ import type {
 
 export interface RunPipelineArgs {
 	videoFile: File;
-	subtitleFile?: File | null;
+	subtitleFile: File;
 	logoFile?: File | null;
 	options: PipelineOptions;
 	signal?: AbortSignal;
@@ -124,28 +123,19 @@ export async function runCnToViPipeline(
 	}
 	abortGuard();
 
-	// ── 3. parse SRT or derive cues from OCR ──────────────────────────────
-	let sourceCues;
-	if (subtitleFile) {
-		emitter.stage("parsing-srt");
-		const srtText = await subtitleFile.text();
-		const parsed = parseSubtitleFile({
-			fileName: subtitleFile.name,
-			input: srtText,
-		});
-		for (const w of parsed.warnings) {
-			warnings.push({ code: "ocr-missing-cue", message: w });
-		}
-		sourceCues = parsed.captions;
-	} else {
-		emitter.stage("parsing-srt"); // reuse stage label
-		sourceCues = ocrFramesToCues({ frames: ocrFrames });
-		if (sourceCues.length === 0) {
-			warnings.push({
-				code: "ocr-missing-cue",
-				message: "OCR found no Chinese text in the video. Check that the video has visible hardcoded subtitles.",
-			});
-		}
+	// ── 3. parse SRT (Vietnamese, pre-translated) ─────────────────────────
+	emitter.stage("parsing-srt");
+	const srtText = await subtitleFile.text();
+	const parsed = parseSubtitleFile({
+		fileName: subtitleFile.name,
+		input: srtText,
+	});
+	for (const w of parsed.warnings) {
+		warnings.push({ code: "ocr-missing-cue", message: w });
+	}
+	const sourceCues = parsed.captions;
+	if (sourceCues.length === 0) {
+		throw new Error("SRT file contains no valid cues");
 	}
 	abortGuard();
 
