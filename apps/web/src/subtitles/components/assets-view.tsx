@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { PanelView } from "@/components/editor/panels/assets/views/base-panel";
+import { PipelineView as AutoTranslatePipelineView } from "@/subtitles/auto-translate/components/pipeline-view";
 import {
 	Select,
 	SelectContent,
@@ -86,6 +88,7 @@ function processingReducer(
 export function Captions() {
 	const [selectedLanguage, setSelectedLanguage] =
 		useState<TranscriptionLanguage>("auto");
+	const [autoTranslateOpen, setAutoTranslateOpen] = useState(false);
 	const [processing, dispatch] = useReducer(processingReducer, IDLE_STATE);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -318,6 +321,20 @@ export function Captions() {
 						{isProcessing && <Spinner className="mr-1" />}
 						{isProcessing ? processing.step : "Generate transcript"}
 					</Button>
+					<Button
+						type="button"
+						variant="outline"
+						className="w-full"
+						onClick={() => setAutoTranslateOpen(true)}
+						disabled={isProcessing}
+					>
+						Auto CN→VI pipeline
+					</Button>
+					<Dialog open={autoTranslateOpen} onOpenChange={setAutoTranslateOpen}>
+						<DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+							<AutoTranslatePipelineView onClose={() => setAutoTranslateOpen(false)} />
+						</DialogContent>
+					</Dialog>
 					{error && (
 						<div className="bg-destructive/10 border-destructive/20 rounded-md border p-3">
 							<p className="text-destructive text-sm">{error}</p>

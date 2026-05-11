@@ -43,7 +43,7 @@ type RunState =
 
 const SFX_LEVELS: SfxLevel[] = ["off", "light", "medium", "heavy"];
 
-export default function CnToViPage() {
+export function PipelineView({ onClose }: { onClose?: () => void } = {}) {
 	const editor = useEditor();
 	const router = useRouter();
 	const [profiles, setProfiles] = useState<ChannelProfile[]>([]);
@@ -200,7 +200,10 @@ export default function CnToViPage() {
 			{run.kind === "done" && (
 				<DoneView
 					warnings={run.warnings}
-					onOpen={() => router.push(`/editor/${run.projectId}`)}
+					onOpen={() => {
+						onClose?.();
+						router.push(`/editor/${run.projectId}`);
+					}}
 				/>
 			)}
 			{run.kind === "error" && (

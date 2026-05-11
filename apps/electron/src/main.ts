@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 
 const DEV_URL = process.env.OPENCUT_DEV_URL ?? "http://localhost:3000";
-const LANDING_PATH = process.env.OPENCUT_LANDING_PATH ?? "/cn-to-vi";
+const LANDING_PATH = process.env.OPENCUT_LANDING_PATH ?? "/projects";
 const IS_DEV = process.env.OPENCUT_DEV === "1" || !app.isPackaged;
 
 let mainWindow: BrowserWindow | null = null;
