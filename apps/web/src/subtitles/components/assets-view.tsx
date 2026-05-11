@@ -2,53 +2,18 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { PanelView } from "@/components/editor/panels/assets/views/base-panel";
 import { PipelineView as AutoTranslatePipelineView } from "@/subtitles/auto-translate/components/pipeline-view";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import { useReducer, useRef, useState } from "react";
-import { extractTimelineAudio } from "@/media/mediabunny";
 import { useEditor } from "@/editor/use-editor";
-import { TRANSCRIPTION_DIAGNOSTICS_SCOPE } from "@/transcription/diagnostics";
-import { DEFAULT_TRANSCRIPTION_SAMPLE_RATE } from "@/transcription/audio";
-import { TRANSCRIPTION_LANGUAGES } from "@/transcription/supported-languages";
-import type {
-	CaptionChunk,
-	TranscriptionLanguage,
-	TranscriptionProgress,
-} from "@/transcription/types";
-import { transcriptionService } from "@/services/transcription/service";
-import { decodeAudioToFloat32 } from "@/media/audio";
-import { buildCaptionChunks } from "@/transcription/caption";
+import type { CaptionChunk } from "@/transcription/types";
 import { insertCaptionChunksAsTextTrack } from "@/subtitles/insert";
 import { parseSubtitleFile } from "@/subtitles/parse";
 import { Spinner } from "@/components/ui/spinner";
 import {
 	Section,
 	SectionContent,
-	SectionField,
-	SectionFields,
 } from "@/components/section";
-import { AlertCircleIcon, CloudUploadIcon } from "@hugeicons/core-free-icons";
+import { CloudUploadIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
-import type { DiagnosticSeverity } from "@/diagnostics/types";
-
-const DIAGNOSTIC_BUTTON_VARIANT: Record<
-	DiagnosticSeverity,
-	"caution" | "destructive-foreground"
-> = {
-	caution: "caution",
-	error: "destructive-foreground",
-};
 
 type ProcessingState =
 	| { status: "idle"; error: string | null; warnings: string[] }
@@ -86,8 +51,6 @@ function processingReducer(
 /* eslint-enable opencut/prefer-object-params */
 
 export function Captions() {
-	const [selectedLanguage, setSelectedLanguage] =
-		useState<TranscriptionLanguage>("auto");
 	const [autoTranslateOpen, setAutoTranslateOpen] = useState(false);
 	const [processing, dispatch] = useReducer(processingReducer, IDLE_STATE);
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -96,21 +59,6 @@ export function Captions() {
 
 	const isProcessing = processing.status === "processing";
 
-	const activeDiagnostics = useEditor((e) =>
-		e.diagnostics.getActive({ scope: TRANSCRIPTION_DIAGNOSTICS_SCOPE }),
-	);
-
-	const handleProgress = (progress: TranscriptionProgress) => {
-		if (progress.status === "loading-model") {
-			dispatch({
-				type: "update_step",
-				step: `Loading model ${Math.round(progress.progress)}%`,
-			});
-		} else if (progress.status === "transcribing") {
-			dispatch({ type: "update_step", step: "Transcribing..." });
-		}
-	};
-
 	const insertCaptions = ({
 		captions,
 	}: {
@@ -118,48 +66,6 @@ export function Captions() {
 	}): boolean => {
 		const trackId = insertCaptionChunksAsTextTrack({ editor, captions });
 		return trackId !== null;
-	};
-
-	const handleGenerateTranscript = async () => {
-		dispatch({ type: "start", step: "Extracting audio..." });
-		try {
-			const audioBlob = await extractTimelineAudio({
-				tracks: editor.scenes.getActiveScene().tracks,
-				mediaAssets: editor.media.getAssets(),
-				totalDuration: editor.timeline.getTotalDuration(),
-			});
-
-			dispatch({ type: "update_step", step: "Preparing audio..." });
-			const { samples } = await decodeAudioToFloat32({
-				audioBlob,
-				sampleRate: DEFAULT_TRANSCRIPTION_SAMPLE_RATE,
-			});
-
-			const result = await transcriptionService.transcribe({
-				audioData: samples,
-				language: selectedLanguage === "auto" ? undefined : selectedLanguage,
-				onProgress: handleProgress,
-			});
-
-			dispatch({ type: "update_step", step: "Generating captions..." });
-			const captionChunks = buildCaptionChunks({ segments: result.segments });
-
-			if (!insertCaptions({ captions: captionChunks })) {
-				dispatch({ type: "fail", error: "No captions were generated" });
-				return;
-			}
-
-			dispatch({ type: "succeed", warnings: [] });
-		} catch (error) {
-			console.error("Transcription failed:", error);
-			dispatch({
-				type: "fail",
-				error:
-					error instanceof Error
-						? error.message
-						: "An unexpected error occurred",
-			});
-		}
 	};
 
 	const handleImportClick = () => {
@@ -224,19 +130,6 @@ export function Captions() {
 		await handleImportFile({ file });
 	};
 
-	const handleLanguageChange = ({ value }: { value: string }) => {
-		if (value === "auto") {
-			setSelectedLanguage("auto");
-			return;
-		}
-
-		const matchedLanguage = TRANSCRIPTION_LANGUAGES.find(
-			(language) => language.code === value,
-		);
-		if (!matchedLanguage) return;
-		setSelectedLanguage(matchedLanguage.code);
-	};
-
 	const error = processing.status === "idle" ? processing.error : null;
 	const warnings = processing.status === "idle" ? processing.warnings : [];
 
@@ -245,36 +138,17 @@ export function Captions() {
 			title="Captions"
 			contentClassName="px-0 flex flex-col h-full"
 			actions={
-				<TooltipProvider>
-					<div className="flex items-center gap-1.5">
-						{!isProcessing &&
-							activeDiagnostics.map((diagnostic) => (
-								<Tooltip key={diagnostic.id}>
-									<TooltipTrigger asChild>
-										<Button
-											variant={DIAGNOSTIC_BUTTON_VARIANT[diagnostic.severity]}
-											size="icon"
-											aria-label={diagnostic.message}
-										>
-											<HugeiconsIcon icon={AlertCircleIcon} size={16} />
-										</Button>
-									</TooltipTrigger>
-									<TooltipContent>{diagnostic.message}</TooltipContent>
-								</Tooltip>
-							))}
-						<Button
-							type="button"
-							variant="outline"
-							size="sm"
-							onClick={handleImportClick}
-							disabled={isProcessing}
-							className="items-center justify-center gap-1.5"
-						>
-							<HugeiconsIcon icon={CloudUploadIcon} />
-							Import
-						</Button>
-					</div>
-				</TooltipProvider>
+				<Button
+					type="button"
+					variant="outline"
+					size="sm"
+					onClick={handleImportClick}
+					disabled={isProcessing}
+					className="items-center justify-center gap-1.5"
+				>
+					<HugeiconsIcon icon={CloudUploadIcon} />
+					Import SRT
+				</Button>
 			}
 			ref={containerRef}
 		>
@@ -291,44 +165,14 @@ export function Captions() {
 				className="flex-1"
 			>
 				<SectionContent className="flex flex-col gap-4 h-full pt-1">
-					<SectionFields>
-						<SectionField label="Language">
-							<Select
-								value={selectedLanguage}
-								onValueChange={(value) => handleLanguageChange({ value })}
-							>
-								<SelectTrigger>
-									<SelectValue placeholder="Select a language" />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem value="auto">Auto detect</SelectItem>
-									{TRANSCRIPTION_LANGUAGES.map((language) => (
-										<SelectItem key={language.code} value={language.code}>
-											{language.name}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-						</SectionField>
-					</SectionFields>
-
 					<Button
 						type="button"
 						className="mt-auto w-full"
-						onClick={handleGenerateTranscript}
-						disabled={isProcessing || activeDiagnostics.length > 0}
-					>
-						{isProcessing && <Spinner className="mr-1" />}
-						{isProcessing ? processing.step : "Generate transcript"}
-					</Button>
-					<Button
-						type="button"
-						variant="outline"
-						className="w-full"
 						onClick={() => setAutoTranslateOpen(true)}
 						disabled={isProcessing}
 					>
-						Auto CN→VI pipeline
+						{isProcessing && <Spinner className="mr-1" />}
+						{isProcessing ? processing.step : "Auto CN→VI pipeline"}
 					</Button>
 					<Dialog open={autoTranslateOpen} onOpenChange={setAutoTranslateOpen}>
 						<DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
