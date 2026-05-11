@@ -17,7 +17,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { runCnToViPipeline } from "@/cn-vi-auto/orchestrator";
+import { runCnToViPipeline } from "@/subtitles/auto-translate/orchestrator";
 import {
 	createDefaultProfile,
 	deleteProfile,
@@ -26,14 +26,14 @@ import {
 	listProfiles,
 	saveProfile,
 	setActiveProfileId,
-} from "@/cn-vi-auto/profile-store";
+} from "@/subtitles/auto-translate/profile-store";
 import type {
 	ChannelProfile,
 	PipelineOptions,
 	PipelineProgress,
 	PipelineWarning,
 	SfxLevel,
-} from "@/cn-vi-auto/types";
+} from "@/subtitles/auto-translate/types";
 
 type RunState =
 	| { kind: "idle" }
