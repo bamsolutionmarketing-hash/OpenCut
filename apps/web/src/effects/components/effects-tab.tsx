@@ -25,7 +25,6 @@ import {
 } from "@hugeicons/core-free-icons";
 import { cn } from "@/utils/ui";
 import { Separator } from "@/components/ui/separator";
-import { useAssetsPanelStore } from "@/components/editor/panels/assets/assets-panel-store";
 
 export function StandaloneEffectTab({
 	element,
@@ -204,8 +203,6 @@ export function ClipEffectsTab({
 }
 
 function EmptyView() {
-	const setActiveTab = useAssetsPanelStore((s) => s.setActiveTab);
-
 	return (
 		<div className="flex flex-col h-full items-center justify-center gap-4 text-center">
 			<HugeiconsIcon
@@ -216,16 +213,9 @@ function EmptyView() {
 			<div className="flex flex-col gap-2">
 				<h3 className="font-medium text-foreground">No effects</h3>
 				<p className="text-muted-foreground text-sm text-balance max-w-44">
-					Add effects to this layer from the Assets panel.
+					No effects applied to this layer.
 				</p>
 			</div>
-			<Button
-				variant="default"
-				size="sm"
-				onClick={() => setActiveTab("effects")}
-			>
-				Open effects
-			</Button>
 		</div>
 	);
 }

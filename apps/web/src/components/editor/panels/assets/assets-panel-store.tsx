@@ -2,30 +2,14 @@ import type { ElementType } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import {
-	ArrowRightDoubleIcon,
 	ClosedCaptionIcon,
 	Folder03Icon,
-	Happy01Icon,
-	HeadphonesIcon,
-	MagicWand05Icon,
 	TextIcon,
 	Settings01Icon,
-	SlidersHorizontalIcon,
-	ColorsIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 
-export const TAB_KEYS = [
-	"media",
-	"sounds",
-	"text",
-	"stickers",
-	"effects",
-	"transitions",
-	"captions",
-	"adjustment",
-	"settings",
-] as const;
+export const TAB_KEYS = ["media", "text", "captions", "settings"] as const;
 
 export type Tab = (typeof TAB_KEYS)[number];
 
@@ -40,33 +24,13 @@ export const tabs = {
 		icon: createHugeiconsIcon({ icon: Folder03Icon }),
 		label: "Media",
 	},
-	sounds: {
-		icon: createHugeiconsIcon({ icon: HeadphonesIcon }),
-		label: "Sounds",
-	},
 	text: {
 		icon: createHugeiconsIcon({ icon: TextIcon }),
 		label: "Text",
 	},
-	stickers: {
-		icon: createHugeiconsIcon({ icon: Happy01Icon }),
-		label: "Stickers",
-	},
-	effects: {
-		icon: createHugeiconsIcon({ icon: MagicWand05Icon }),
-		label: "Effects",
-	},
-	transitions: {
-		icon: createHugeiconsIcon({ icon: ArrowRightDoubleIcon }),
-		label: "Transitions",
-	},
 	captions: {
 		icon: createHugeiconsIcon({ icon: ClosedCaptionIcon }),
 		label: "Captions",
-	},
-	adjustment: {
-		icon: createHugeiconsIcon({ icon: SlidersHorizontalIcon }),
-		label: "Adjustment",
 	},
 	settings: {
 		icon: createHugeiconsIcon({ icon: Settings01Icon }),
